@@ -1,0 +1,45 @@
+{
+  "name": "react-canvas-snap",
+  "version": "1.0.0",
+  "description": "ReactCanvasSnap is a lightweight and customizable React library that enables developers to capture content from HTML canvas elements effortlessly. Whether you're building interactive web applications, creative drawing tools, or capturing snapshots of dynamic visualizations, ReactCanvasSnap provides a simple API to seamlessly integrate canvas capturing into your React projects.",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "build-lib": "rollup -c rollup.config.ts"
+  },
+  "author": "Njatotiana Fiononana",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/preset-react": "^7.25.9",
+    "@chromatic-com/storybook": "^3.2.2",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-node-resolve": "^15.3.0",
+    "@rollup/plugin-typescript": "^12.1.1",
+    "@storybook/addon-docs": "^8.4.5",
+    "@storybook/addon-essentials": "^8.4.5",
+    "@storybook/addon-interactions": "^8.4.5",
+    "@storybook/addon-links": "^8.4.5",
+    "@storybook/addon-onboarding": "^8.4.5",
+    "@storybook/blocks": "^8.4.5",
+    "@storybook/react": "^8.4.5",
+    "@storybook/react-vite": "^8.4.5",
+    "@storybook/test": "^8.4.5",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "storybook": "^8.4.5",
+    "ts-node": "^10.9.2",
+    "tslib": "^2.8.1",
+    "typescript": "^5.7.2"
+  },
+  "peerDependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typescript": "^5.7.2"
+  }
+}
