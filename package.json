@@ -8,15 +8,18 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "build-lib": "rollup -c rollup.config.ts"
+    "build-lib": "rollup -c rollup.config.ts",
+    "build": "tsc"
   },
   "author": "Njatotiana Fiononana",
   "license": "MIT",
   "devDependencies": {
+    "@babel/core": "^7.26.0",
     "@babel/preset-react": "^7.25.9",
     "@chromatic-com/storybook": "^3.2.2",
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-node-resolve": "^15.3.0",
+    "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^12.1.1",
     "@storybook/addon-docs": "^8.4.5",
     "@storybook/addon-essentials": "^8.4.5",

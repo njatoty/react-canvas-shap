@@ -1,0 +1,25 @@
+# Exclude Storybook files
+.storybook/
+stories/
+
+# Exclude build tools and configs
+rollup.config.js
+tsconfig.json
+.babelrc
+
+# Exclude tests and test configs
+__tests__/
+*.spec.js
+jest.config.js
+
+# Exclude source files if only dist is needed
+src/
+
+# Exclude local development files
+.env
+.gitignore
+.DS_Store
+node_modules/
+
+# Include the `dist/` directory
+!dist/

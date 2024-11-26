@@ -1,4 +1,4 @@
-import Canvas from "../components/canvas-shooter/Canvas";
+import Canvas from "../components/Canvas";
 
 export default {
     component: Canvas,

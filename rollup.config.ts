@@ -2,6 +2,7 @@ import babel from '@rollup/plugin-babel';
 import resolve from '@rollup/plugin-node-resolve';
 import external from 'rollup-plugin-peer-deps-external';
 import typescript from '@rollup/plugin-typescript';
+import terser from '@rollup/plugin-terser';
 
 export default {
     input: './src/index.ts', // Entry point
@@ -28,6 +29,7 @@ export default {
             babelHelpers: 'bundled',
             presets: ['@babel/preset-react'],
         }),
+        terser()
     ],
     external: ['react', 'react-dom'], // Mark peer dependencies as external
 };

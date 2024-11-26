@@ -17,7 +17,7 @@ type HelperText<T extends boolean> = {
     show: false
 })
 
-type CanvasDrawingOptions = {
+export type CanvasDrawingOptions = {
     drawingEnabled: boolean;
     rect?: {
         outterbackgroundColor?: string;
@@ -31,7 +31,7 @@ type CanvasDrawingOptions = {
     helperText?: HelperText<boolean>
 }
 
-type SnapshotProps = {
+export type SnapshotProps = {
     isCanceled: boolean;
     capturedImage: string | null;
     rectCoords: {

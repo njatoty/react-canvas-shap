@@ -30,7 +30,7 @@ type CanvasDrawingOptions = {
   helperText?: HelperText<boolean>
 }
 
-interface CanvasCustomProps {
+export interface CanvasCustomProps {
   drawingEnabled?: boolean;
   option?: CanvasDrawingOptions;
   containerDivClassName?: string;
