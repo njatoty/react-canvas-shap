@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect, useCallback, useMemo } from 'react';
-import { deepEqual } from './methods';
+import { copyBase64ImageToClipboard, deepEqual } from './methods';
 
 type HelperText<T extends boolean> = {
     show: T
@@ -17,6 +17,8 @@ type HelperText<T extends boolean> = {
     show: false
 })
 
+type Cursor = 'auto' | 'default' | 'none' | 'context-menu' | 'help' | 'pointer' | 'progress' | 'wait' | 'cell' | 'crosshair' | 'text' | 'vertical-text' | 'alias' | 'copy' | 'move' | 'no-drop' | 'not-allowed' | 'all-scroll' | 'zoom-in' | 'zoom-out' | 'ew-resize' | 'ns-resize' | 'nesw-resize' | 'nwse-resize' | 'col-resize' | 'row-resize' | 'copy' | 'grab' | 'grabbing';
+
 export type CanvasDrawingOptions = {
     drawingEnabled: boolean;
     rect?: {
@@ -28,7 +30,10 @@ export type CanvasDrawingOptions = {
     isGrayscale?: boolean;
     dpr?: number;
     scale?: number;
-    helperText?: HelperText<boolean>
+    helperText?: HelperText<boolean>;
+    cursor?: Cursor,
+    copyImageToClipBoard?: boolean,
+    imageQuality?: "low" | "medium" | "high"
 }
 
 export type SnapshotProps = {
@@ -42,13 +47,24 @@ export type SnapshotProps = {
     }
 }
 
+const DEFAULT_OPTION: CanvasDrawingOptions = {
+    drawingEnabled: false,
+    isGrayscale: false,
+    cursor: 'crosshair',
+    copyImageToClipBoard: true,
+    imageQuality: "high"
+}
+
+const imageQualityValue = {
+    low: 0.1,
+    medium: 0.5,
+    high: 1.0
+}
+
 export const useCanvasSnap = (
     ref: React.RefObject<HTMLCanvasElement> | null, // Optional ref parameter
     callBack?: (snapshot: SnapshotProps) => void,
-    option: CanvasDrawingOptions = {
-        drawingEnabled: false,
-        isGrayscale: false,
-    }
+    option: CanvasDrawingOptions = DEFAULT_OPTION,
 ) => {
     const canvasRef = ref ?? useRef<HTMLCanvasElement>(null);
     const [layerCanvas, setLayerCanvas] = useState<HTMLCanvasElement | null>(null);
@@ -59,13 +75,7 @@ export const useCanvasSnap = (
     }), []);
     const [rectCoords, setRectCoords] = useState(initialRecCoords); // To store rect dimensions
 
-    const [defaultOption, setDefaultOption] = useState<CanvasDrawingOptions>(option);
-
-    useEffect(() => {
-        if (!deepEqual(option as unknown as ObjectConstructor, defaultOption as unknown as ObjectConstructor)) {
-            setDefaultOption(option);
-        }
-    }, [option, defaultOption]);
+    const defaultOption = useMemo(() => ({ ...DEFAULT_OPTION, ...option }), [option]);
 
     const clearLayerCanvas = useCallback(() => {
         if (!layerCanvas) return;
@@ -100,9 +110,10 @@ export const useCanvasSnap = (
             const layer = currentCanvas.cloneNode(true) as HTMLCanvasElement;
             layer.className = 'drawer-layer';
             layer.style.position = 'absolute';
-            layer.style.cursor = 'crosshair';
+            layer.style.cursor = defaultOption.cursor || 'crosshair';
             layer.style.inset = '0';
             layer.style.zIndex = '10';
+            layer.style.background = 'transparent';
 
             setLayerCanvas(layer);
 
@@ -125,9 +136,16 @@ export const useCanvasSnap = (
         tempCanvas.height = Math.abs(height);
         const tempCtx = tempCanvas.getContext('2d');
 
-        // Apply grayscale filter
         if (tempCtx) {
 
+            // Optionally, fill the background color (adjust the color as needed)
+            const { backgroundColor, background } = canvasRef.current.style;
+            if (backgroundColor || background) {
+                tempCtx.fillStyle = backgroundColor || background || '#ffffff';  // Example background color (white)
+                tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);  // Fill background
+            }
+
+            // Apply grayscale filter
             if (defaultOption.isGrayscale)
                 tempCtx.filter = 'grayscale(100%)';
 
@@ -150,7 +168,7 @@ export const useCanvasSnap = (
         }
 
         // Convert to data URL
-        return tempCanvas.toDataURL('image/png');
+        return tempCanvas.toDataURL('image/png', imageQualityValue[defaultOption.imageQuality!]);
 
     }, [rectCoords, canvasRef, defaultOption.isGrayscale]);
 
@@ -315,7 +333,7 @@ export const useCanvasSnap = (
         };
 
         // press enter
-        const handlePressKey = (e: KeyboardEvent) => {
+        const handlePressKey = async (e: KeyboardEvent) => {
             // prevent default behaviour
             e.preventDefault();
             if (rectCoords.height === 0 || rectCoords.width === 0) return;
@@ -329,7 +347,12 @@ export const useCanvasSnap = (
                 }
 
                 // return calback
-                if (callBack) callBack(snapshot);
+                callBack?.(snapshot);
+
+                // copy image to clipboard
+                if (defaultOption.copyImageToClipBoard) {
+                    await copyBase64ImageToClipboard(snapshot.capturedImage!);
+                }
 
                 setIsDrawing(false);
             }

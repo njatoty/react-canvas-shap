@@ -7,27 +7,27 @@ export default {
 
 export const Default = {
     args: {
-        width: 400,
+        width: 800,
         height: 400,
         drawingEnabled: true,
         option: {
             rect: {
-                borderColor: 'blue',
-                borderStyle: 'dashed',
-                borderWidth: 2,
+                borderColor: 'orange',
+                borderStyle: 'normal',
+                borderWidth: 1,
                 outterBackgroundColor: 'rgba(0, 255, 0, 0.1)'
             },
             helperText: {
                 show: true,
                 backgroundColor: 'black',
                 textColor: 'white',
-                position: 'top-right',
+                position: 'bottom-right',
                 fontSize: 12
-            }
+            },
         },
         style: {
             border: "2px solid red"
         },
-        onCaptured: (img: string) => console.log(img)
+        onImageCaptured: (img: string) => console.log(img)
     }
 }
