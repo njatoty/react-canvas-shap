@@ -36,17 +36,17 @@ import Canvas from 'react-canvas-snap';
     drawingEnabled={true} 
     option={{
         rect: {
-        borderColor: '#F14236',
-        borderStyle: 'dashed',
-        borderWidth: 1
+            borderColor: '#F14236',
+            borderStyle: 'dashed',
+            borderWidth: 1
         },
         helperText: {
-        show: true,
-        value: 'Demo Capture (Enter: to capture | Esc: to cancel)',
-        padding: 3,
-        fontSize: 10,
-        backgroundColor: '#F14236',
-        textColor: '#fff'
+            show: true,
+            value: 'Demo Capture (Enter: to capture | Esc: to cancel)',
+            padding: 3,
+            fontSize: 10,
+            backgroundColor: '#F14236',
+            textColor: '#fff'
         },
         imageQuality: "high", 
     }}
@@ -60,4 +60,86 @@ import Canvas from 'react-canvas-snap';
 />
 ```
 
-export default YourComponent;
+## Using hook
+
+To import the hook, use:
+
+```bash
+import { useCanvasSnap } from 'react-canvas-snap';
+```
+To use the useCanvasSnap hook from react-canvas-snap, you can follow the different usage patterns based on whether you want to pass a ref to it or not.
+
+### 1. Without Using Ref:
+
+If you don't want to manually handle the ref, you can simply pass null to the hook. It will return a ref that you can assign to your canvas element.
+
+
+```bash
+  const { canvasRef } = useCanvasSnap(null);
+```
+### 2. Using a Ref Manually:
+If you prefer to use your own ref, you can create one using useRef and pass it to useCanvasSnap. This allows you to have more control over the ref.
+
+```bash
+// Create your own ref with useRef
+const canvasRef = useRef(null);
+
+// Pass the ref to useCanvasSnap
+useCanvasSnap(canvasRef);
+```
+
+## Full usage of hook
+
+``` bash
+import React from 'react';
+import { useCanvasSnap } from 'react-canvas-snap';
+
+const MyComponent = () => {
+    const [drawinEnabled, setDrawingEnabled] = useState(false);
+
+    const option = {
+        drawingEnabled: true,
+        rect: {
+            borderColor: '#F14236',
+            borderStyle: 'dashed',
+            borderWidth: 1
+        },
+        helperText: {
+            show: true,
+            value: 'Demo Capture (Enter: to capture | Esc: to cancel)',
+            padding: 3,
+            fontSize: 10,
+            backgroundColor: '#F14236',
+            textColor: '#fff'
+        },
+        imageQuality: "high", 
+    }
+
+    const handleSnapshot = (snapshot) => {
+        
+        const { isCanceled, capturedImage, rectCoords } = snapshot;
+
+        // capture is canceled
+        if (isCanceled) {
+            setDrawingEnabled(false);
+            // add your logic
+        }
+
+        if (capturedImage && rectCoords) {
+            // get image base64
+            console.log(capturedImage);
+            // you can also get the rect coordinates (x, y, width and height)
+            console.log(rectCoords)
+        }
+    };
+
+    const { canvasRef } useCanvasSnap(null, handleSnapshot, option);
+
+    return (
+        <div style={{ position: 'relative'}}>
+            <canvas ref={canvasRef} width={400} height={400} />
+        </div>
+    )
+};
+    
+```
