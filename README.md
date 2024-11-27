@@ -152,7 +152,7 @@ The canvas drawing tool supports key press events to enhance user interaction:
    - This will **disable the drawing mode** on the canvas, and no further drawing can be done until drawing is re-enabled.
 
 2. **Capture Image with Enter Key**
-   - After completing a drawing (e.g., drawing a rectangle or any other shape), you can press the **Enter** key.
+   - After completing a drawing (drawing a rectangle), you can press the **Enter** key.
    - This will **trigger the snapshot callback** and provide the current image of the canvas as a snapshot.
 
 ### Example Usage:
@@ -160,11 +160,11 @@ The canvas drawing tool supports key press events to enhance user interaction:
 - **Press `Escape`**: Disables drawing, preventing further changes on the canvas.
 - **Press `Enter`**: Captures the drawn content and provides the image through the snapshot callback.
 
+You can check out `handleSnapshot` on **Full hook usage**.
 
+# Canvas Snap Options
 
-# Canvas Drawing Options
-
-The `CanvasDrawingOptions` type allows you to customize the drawing behavior on the canvas. Below is a detailed explanation of each option and its usage.
+The `CanvasSnapOptions` type allows you to customize the drawing behavior on the canvas. Below is a detailed explanation of each option and its usage.
 
 
 | Option                          | Type                                                      | Description                                                                                  | Example/Usage                                            | Default Value           |
@@ -172,8 +172,6 @@ The `CanvasDrawingOptions` type allows you to customize the drawing behavior on 
 | `drawingEnabled`                 | `boolean`                                                 | Enables or disables drawing on the canvas. If set to `false`, drawing is disabled.            | `drawingEnabled: true`                                    | `false`                 |
 | `rect`                           | `object`                                                  | Customizes the rectangle's appearance when drawing a rectangle.                               | See `rect` options below                                  | `{}` (empty object)     |
 | `isGrayscale`                    | `boolean`                                                 | If set to `true`, the canvas will be rendered in grayscale.                                   | `isGrayscale: true`                                       | `false`                 |
-| `dpr`                            | `number`                                                  | The device pixel ratio for scaling the canvas. The higher the value, the sharper the image.   | `dpr: 2` (high DPI for retina displays)                   | `1`                     |
-| `scale`                          | `number`                                                  | The scale factor for zooming the canvas content.                                               | `scale: 1.5` (1.5x zoom)                                  | `1`                     |
 | `helperText`                     | `HelperText`                                     | Optionally adds helper text on the canvas. If provided, it will show or hide based on the boolean value. | See `helperText`. | `{ show: true, backgroundColor: '#F14236', textColor: '#fff', position: 'bottom-right', fontSize: 10, padding: 2 }` |
 | `cursor`                         | `Cursor`                                                  | Customizes the cursor appearance on the canvas.                                               | `cursor: 'crosshair'`                                     | `'crosshair'`           |
 | `copyImageToClipBoard`           | `boolean`                                                 | If `true`, it allows copying the drawn image to the clipboard.                               | `copyImageToClipBoard: true`                              | `true`                  |
@@ -206,25 +204,11 @@ The `helperText` option has the following customizable properties:
 | `position`                      | `string` | The position of the helper text on the canvas.<br>Option include `top-right`, `bottom-right`, `top-left`, `bottom-left`, <br> `top-center` or `bottom-center`       | `position: 'bottom-right'`                              | `'bottom-right'`        |
 
 
-## Example Usage
+## Acknowledgments
+Thanks to the open-source community for their contributions that helped shape this library.
 
-```ts
-const canvasOptions: CanvasDrawingOptions = {
-  drawingEnabled: true,
-  rect: {
-    outterbackgroundColor: '#f0f0f0',
-    borderColor: 'black',
-    borderStyle: 'solid',
-    borderWidth: 2,
-  },
-  isGrayscale: false,
-  dpr: 2,
-  scale: 1.5,
-  helperText: { show: true, text: 'Use the brush tool!' },
-  cursor: 'crosshair',
-  copyImageToClipBoard: true,
-  imageQuality: 'high',
-};
+## Contact
+For any questions or feedback, feel free to reach out on [GitHub](https://github.com/njatoty).
 
-    
-```
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
