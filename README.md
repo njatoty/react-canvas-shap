@@ -75,7 +75,7 @@ If you don't want to manually handle the ref, you can simply pass null to the ho
 
 
 ```js
-  const { canvasRef } = useCanvasSnap(null);
+const { canvasRef } = useCanvasSnap(null);
 ```
 ### 2. Using a Ref Manually:
 If you prefer to use your own ref, you can create one using useRef and pass it to useCanvasSnap. This allows you to have more control over the ref.
