@@ -19,7 +19,7 @@ type HelperText<T extends boolean> = {
 
 type Cursor = 'auto' | 'default' | 'none' | 'context-menu' | 'help' | 'pointer' | 'progress' | 'wait' | 'cell' | 'crosshair' | 'text' | 'vertical-text' | 'alias' | 'copy' | 'move' | 'no-drop' | 'not-allowed' | 'all-scroll' | 'zoom-in' | 'zoom-out' | 'ew-resize' | 'ns-resize' | 'nesw-resize' | 'nwse-resize' | 'col-resize' | 'row-resize' | 'copy' | 'grab' | 'grabbing';
 
-export type CanvasDrawingOptions = {
+export type CanvasSnapOptions = {
     drawingEnabled: boolean;
     rect?: {
         outterBackgroundColor?: string;
@@ -45,7 +45,7 @@ export type SnapshotProps = {
     } | null
 }
 
-const DEFAULT_OPTION: CanvasDrawingOptions = {
+const DEFAULT_OPTION: CanvasSnapOptions = {
     drawingEnabled: false,
     isGrayscale: false,
     cursor: 'crosshair',
@@ -76,7 +76,7 @@ const imageQualityValue = {
 export const useCanvasSnap = (
     ref: React.RefObject<HTMLCanvasElement> | null, // Optional ref parameter
     callBack?: (snapshot: SnapshotProps) => void,
-    option: CanvasDrawingOptions = DEFAULT_OPTION,
+    option: CanvasSnapOptions = DEFAULT_OPTION,
 ) => {
     const canvasRef = ref ?? useRef<HTMLCanvasElement>(null);
     const [layerCanvas, setLayerCanvas] = useState<HTMLCanvasElement | null>(null);

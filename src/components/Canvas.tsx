@@ -1,7 +1,7 @@
 import React, { forwardRef, useImperativeHandle, useMemo, useRef } from 'react';
-import useCanvasSnap, { CanvasDrawingOptions, SnapshotProps } from './hooks';
+import useCanvasSnap, { CanvasSnapOptions, SnapshotProps } from './hooks';
 
-export type CanvasDrawingOptionsWithoutDrawingEnabled = Omit<CanvasDrawingOptions, 'drawingEnabled'>;
+export type CanvasSnapOptionsWithoutDrawingEnabled = Omit<CanvasSnapOptions, 'drawingEnabled'>;
 
 type RectCoords = SnapshotProps['rectCoords'];
 
@@ -14,7 +14,7 @@ export type CapturedImage = {
 }
 export interface CanvasCustomProps {
   drawingEnabled?: boolean;
-  option?: CanvasDrawingOptionsWithoutDrawingEnabled;
+  option?: CanvasSnapOptionsWithoutDrawingEnabled;
   containerDivClassName?: string;
   onImageCaptured?: (image: CapturedImage) => void;
   onCaptureCanceled?: () => void;
