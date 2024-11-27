@@ -4,6 +4,14 @@
   "description": "ReactCanvasSnap is a lightweight and customizable React library that enables developers to capture content from HTML canvas elements effortlessly. Whether you're building interactive web applications, creative drawing tools, or capturing snapshots of dynamic visualizations, ReactCanvasSnap provides a simple API to seamlessly integrate canvas capturing into your React projects.",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/njatoty/react-canvas-snap.git"
+  },
+  "homepage": "https://github.com/njatoty/react-canvas-snap#readme",
+  "bugs": {
+    "url": "https://github.com/njatoty/react-canvas-snap/issues"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "storybook": "storybook dev -p 6006",

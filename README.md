@@ -182,10 +182,10 @@ The `rect` option has the following customizable properties:
 
 | Option                          | Type                                                      | Description                                                                                  | Example/Usage                                            | Default Value           |
 |----------------------------------|-----------------------------------------------------------|----------------------------------------------------------------------------------------------|----------------------------------------------------------|-------------------------|
-| `outterbackgroundColor`     | `string`                                                  | The background color of the rectangle outside the border.                                    | `rect: { outterbackgroundColor: '#f0f0f0' }`             | `'rgba(0, 0, 0, 0.1)'`  |
-| `borderColor`               | `string`                                                  | The color of the rectangle's border.                                                          | `rect: { borderColor: 'black' }`                          | `'#F14236'`             |
-| `borderStyle`               | `string`                                                  | The style of the rectangle's border. Options include `dashed`, `dotted`, or `solid`.         | `rect: { borderStyle: 'dotted' }`                         | `'dashed'`              |
-| `borderWidth`               | `number`                                                  | The width of the rectangle's border in pixels.                                                | `rect: { borderWidth: 2 }`                                | `1`                     |
+| `outterBackgroundColor`     | `string`                                                  | The background color of the rectangle outside the border.                                    | `outterBackgroundColor: '#f0f0f0'`             | `'rgba(0, 0, 0, 0.1)'`  |
+| `borderColor`               | `string`                                                  | The color of the rectangle's border.                                                          | `borderColor: 'black'`                          | `'#F14236'`             |
+| `borderStyle`               | `string`                                                  | The style of the rectangle's border. Options include `dashed`, `dotted`, or `solid`.         | `borderStyle: 'dotted'`                         | `'dashed'`              |
+| `borderWidth`               | `number`                                                  | The width of the rectangle's border in pixels.                                                | `borderWidth: 2`                                | `1`                     |
 
 
 ### HelperText Options

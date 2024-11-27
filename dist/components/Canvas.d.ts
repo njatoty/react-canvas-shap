@@ -1,10 +1,12 @@
 import React from 'react';
-import { CanvasDrawingOptions } from './hooks';
+import { CanvasDrawingOptions, SnapshotProps } from './hooks';
 export type CanvasDrawingOptionsWithoutDrawingEnabled = Omit<CanvasDrawingOptions, 'drawingEnabled'>;
+type RectCoords = SnapshotProps['rectCoords'];
 export type CapturedImage = {
     src: string;
     width: number;
     height: number;
+    coordinates?: RectCoords;
 };
 export interface CanvasCustomProps {
     drawingEnabled?: boolean;

@@ -18,7 +18,7 @@ export const Default = {
                 outterBackgroundColor: 'rgba(0, 255, 0, 0.1)'
             },
             helperText: {
-                show: true,
+                show: false,
                 backgroundColor: 'black',
                 textColor: 'white',
                 position: 'bottom-right',

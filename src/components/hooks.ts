@@ -22,14 +22,12 @@ type Cursor = 'auto' | 'default' | 'none' | 'context-menu' | 'help' | 'pointer' 
 export type CanvasDrawingOptions = {
     drawingEnabled: boolean;
     rect?: {
-        outterbackgroundColor?: string;
+        outterBackgroundColor?: string;
         borderColor?: string;
         borderStyle?: "dashed" | "dotted" | "solid",
         borderWidth?: number
     }
     isGrayscale?: boolean;
-    dpr?: number;
-    scale?: number;
     helperText?: HelperText<boolean>;
     cursor?: Cursor,
     copyImageToClipBoard?: boolean,
@@ -54,7 +52,7 @@ const DEFAULT_OPTION: CanvasDrawingOptions = {
     copyImageToClipBoard: true,
     imageQuality: "high",
     rect: {
-        outterbackgroundColor: 'rgba(0, 0, 0, 0.1)',
+        outterBackgroundColor: 'rgba(0, 0, 0, 0.1)',
         borderWidth: 1,
         borderColor: '#F14236',
         borderStyle: 'dashed',
@@ -67,7 +65,6 @@ const DEFAULT_OPTION: CanvasDrawingOptions = {
         fontSize: 10,
         padding: 2
     },
-    dpr: 1
 }
 
 const imageQualityValue = {
@@ -136,7 +133,7 @@ export const useCanvasSnap = (
                 // Clear the canvas
                 ctx.clearRect(0, 0, layer.width, layer.height);
                 // Draw a dark semi-transparent overlay
-                ctx.fillStyle = defaultOption.rect?.outterbackgroundColor || 'rgba(0, 0, 0, 0.1)';
+                ctx.fillStyle = defaultOption.rect?.outterBackgroundColor || 'rgba(0, 0, 0, 0.1)';
                 ctx.fillRect(0, 0, layer.width, layer.height);
             }
 
@@ -145,7 +142,7 @@ export const useCanvasSnap = (
             currentCanvas.after(layer);
         }
 
-    }, [canvasRef, defaultOption.drawingEnabled, defaultOption.scale, initialRecCoords]);
+    }, [canvasRef, defaultOption.drawingEnabled, initialRecCoords]);
 
 
     // Method to capture image inside the rect
@@ -215,8 +212,8 @@ export const useCanvasSnap = (
             const rect = layerCanvas.getBoundingClientRect();
 
             // Adjust for both scaling and DPR
-            const scaleX = (layerCanvas.width / rect.width) / (defaultOption.dpr || 1);
-            const scaleY = (layerCanvas.height / rect.height) / (defaultOption.dpr || 1);
+            const scaleX = (layerCanvas.width / rect.width);
+            const scaleY = (layerCanvas.height / rect.height);
 
             const x = (event.clientX - rect.left) * scaleX;
             const y = (event.clientY - rect.top) * scaleY;
@@ -231,8 +228,8 @@ export const useCanvasSnap = (
             const rect = layerCanvas.getBoundingClientRect();
 
             // Adjust for both scaling and DPR
-            const scaleX = (layerCanvas.width / rect.width) / (defaultOption.dpr || 1);
-            const scaleY = (layerCanvas.height / rect.height) / (defaultOption.dpr || 1);
+            const scaleX = (layerCanvas.width / rect.width);
+            const scaleY = (layerCanvas.height / rect.height);
 
             const x = (event.clientX - rect.left) * scaleX;
             const y = (event.clientY - rect.top) * scaleY;
@@ -251,7 +248,7 @@ export const useCanvasSnap = (
             ctx.clearRect(0, 0, layerCanvas.width, layerCanvas.height);
 
             // Draw a dark semi-transparent overlay
-            ctx.fillStyle = defaultOption.rect?.outterbackgroundColor || 'rgba(0, 0, 0, 0.1)';
+            ctx.fillStyle = defaultOption.rect?.outterBackgroundColor || 'rgba(0, 0, 0, 0.1)';
             ctx.fillRect(0, 0, layerCanvas.width, layerCanvas.height);
 
             const lineWidth = defaultOption.rect?.borderWidth!;
@@ -281,6 +278,8 @@ export const useCanvasSnap = (
 
             // draw text if set
             if (!defaultOption.helperText || defaultOption.helperText.show) {
+
+                if (!defaultOption.helperText?.show) return;
 
                 // Add text with a background at the bottom-right corner of the rectangle
                 const text = defaultOption.helperText?.value || "Press Enter to submit, Escape to cancel";

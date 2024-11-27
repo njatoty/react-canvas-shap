@@ -1,12 +1,16 @@
 import React, { forwardRef, useImperativeHandle, useMemo, useRef } from 'react';
-import useCanvasSnap, { CanvasDrawingOptions } from './hooks';
+import useCanvasSnap, { CanvasDrawingOptions, SnapshotProps } from './hooks';
 
 export type CanvasDrawingOptionsWithoutDrawingEnabled = Omit<CanvasDrawingOptions, 'drawingEnabled'>;
+
+type RectCoords = SnapshotProps['rectCoords'];
 
 export type CapturedImage = {
   src: string,
   width: number,
-  height: number
+  height: number,
+  coordinates?: RectCoords// Accessing the rectCoords type directly
+  
 }
 export interface CanvasCustomProps {
   drawingEnabled?: boolean;
@@ -45,7 +49,8 @@ export const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(({
       onImageCaptured?.({
         src: base64,
         width: width,
-        height: height
+        height: height,
+        coordinates: rectCoords
       });
 
     }

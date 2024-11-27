@@ -23,8 +23,6 @@ export type CanvasDrawingOptions = {
         borderWidth?: number;
     };
     isGrayscale?: boolean;
-    dpr?: number;
-    scale?: number;
     helperText?: HelperText<boolean>;
     cursor?: Cursor;
     copyImageToClipBoard?: boolean;
