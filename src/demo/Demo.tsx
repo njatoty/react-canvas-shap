@@ -178,15 +178,17 @@ export const Demo = () => {
                     rect: {
                         borderColor: '#F14236',
                         borderStyle: 'dashed',
-                        borderWidth: 1
+                        borderWidth: 1,
+                        outterBackgroundColor: 'rgba(255,255,255,0.8)'
                     },
                     helperText: {
-                        show: false,
-                        // value: 'Demo Capture (Enter: to capture | Esc: to cancel)',
-                        // padding: 3,
-                        // fontSize: 10,
-                        // backgroundColor: '#F14236',
-                        // textColor: '#fff'
+                        show: true,
+                        value: 'Enter: to capture or Esc: to cancel',
+                        padding: 3,
+                        fontSize: 10,
+                        backgroundColor: '#F14236',
+                        textColor: '#fff',
+                        position: 'top-right'
                     },
                     imageQuality: "low",
                     copyImageToClipBoard: false,
@@ -196,7 +198,7 @@ export const Demo = () => {
                 width={500}
                 height={300}
                 style={{
-                    border: '1px dashed #989898'
+                    outline: '1px dashed #989898'
                 }}
             />
             <div style={{ padding: '1rem' }}>
