@@ -3,7 +3,7 @@
 stories/
 
 # Exclude build tools and configs
-rollup.config.js
+rollup.config.ts
 tsconfig.json
 .babelrc
 
