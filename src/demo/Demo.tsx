@@ -192,6 +192,7 @@ export const Demo = () => {
                     },
                     imageQuality: "low",
                     copyImageToClipBoard: false,
+                    isGrayscale: true
                 }}
                 onCaptureCanceled={() => setCapturing(false)}
                 onImageCaptured={(img) => setCapturedImage(img)}
