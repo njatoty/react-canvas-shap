@@ -3,7 +3,7 @@
 `react-canvas-snap` is a React library that allows you to easily capture a specific region of a canvas using the mouse cursor. It enables users to draw a selection box on the canvas with their mouse and capture the content within the selected area.
 
 # Demo
-![Demo of the app](https://media.giphy.com/media/W5I3xZO4HQprE4eFZP/giphy.gif)
+![Demo of the app](https://media.giphy.com/media/5rg1MC07zIem72QOOo/giphy.gif)
 
 ## Features
 
@@ -25,7 +25,7 @@ After installing the library, you can import the Canvas component and use it to 
 ### Import the Component
 
 ```js
-import Canvas from 'react-canvas-snap';
+import { Canvas } from 'react-canvas-snap';
 ```
 
 ## Example Usage
