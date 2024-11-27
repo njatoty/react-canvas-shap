@@ -1,3 +1,4 @@
+/// <reference types="react" />
 type HelperText<T extends boolean> = {
     show: T;
 } & ({
@@ -14,10 +15,10 @@ type HelperText<T extends boolean> = {
     show: false;
 });
 type Cursor = 'auto' | 'default' | 'none' | 'context-menu' | 'help' | 'pointer' | 'progress' | 'wait' | 'cell' | 'crosshair' | 'text' | 'vertical-text' | 'alias' | 'copy' | 'move' | 'no-drop' | 'not-allowed' | 'all-scroll' | 'zoom-in' | 'zoom-out' | 'ew-resize' | 'ns-resize' | 'nesw-resize' | 'nwse-resize' | 'col-resize' | 'row-resize' | 'copy' | 'grab' | 'grabbing';
-export type CanvasDrawingOptions = {
+export type CanvasSnapOptions = {
     drawingEnabled: boolean;
     rect?: {
-        outterbackgroundColor?: string;
+        outterBackgroundColor?: string;
         borderColor?: string;
         borderStyle?: "dashed" | "dotted" | "solid";
         borderWidth?: number;
@@ -38,7 +39,7 @@ export type SnapshotProps = {
         width: number;
     } | null;
 };
-export declare const useCanvasSnap: (ref: React.RefObject<HTMLCanvasElement> | null, callBack?: (snapshot: SnapshotProps) => void, option?: CanvasDrawingOptions) => {
+export declare const useCanvasSnap: (ref: React.RefObject<HTMLCanvasElement> | null, callBack?: ((snapshot: SnapshotProps) => void) | undefined, option?: CanvasSnapOptions) => {
     canvasRef: import("react").RefObject<HTMLCanvasElement>;
 };
 export default useCanvasSnap;
