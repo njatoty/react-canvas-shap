@@ -24,13 +24,13 @@ After installing the library, you can import the Canvas component and use it to 
 
 ### Import the Component
 
-```bash
+```js
 import Canvas from 'react-canvas-snap';
 ```
 
 ## Example Usage
 
-```bash
+```js
 <Canvas
     ref={yourCanvasRef} 
     drawingEnabled={true} 
@@ -64,7 +64,7 @@ import Canvas from 'react-canvas-snap';
 
 To import the hook, use:
 
-```bash
+```js
 import { useCanvasSnap } from 'react-canvas-snap';
 ```
 To use the useCanvasSnap hook from react-canvas-snap, you can follow the different usage patterns based on whether you want to pass a ref to it or not.
@@ -74,13 +74,13 @@ To use the useCanvasSnap hook from react-canvas-snap, you can follow the differe
 If you don't want to manually handle the ref, you can simply pass null to the hook. It will return a ref that you can assign to your canvas element.
 
 
-```bash
+```js
   const { canvasRef } = useCanvasSnap(null);
 ```
 ### 2. Using a Ref Manually:
 If you prefer to use your own ref, you can create one using useRef and pass it to useCanvasSnap. This allows you to have more control over the ref.
 
-```bash
+```js
 // Create your own ref with useRef
 const canvasRef = useRef(null);
 
@@ -90,7 +90,7 @@ useCanvasSnap(canvasRef);
 
 ### 3. Full usage of hook
 
-``` bash
+``` js
 import React from 'react';
 import { useCanvasSnap } from 'react-canvas-snap';
 
@@ -143,6 +143,25 @@ const MyComponent = () => {
 };
 ```
 
+## Drawing Functionality with Key Presses
+
+The canvas drawing tool supports key press events to enhance user interaction:
+
+1. **Disable Drawing with Escape Key**
+   - If drawing is enabled and you want to stop the drawing action, you can press the **Escape** key.
+   - This will **disable the drawing mode** on the canvas, and no further drawing can be done until drawing is re-enabled.
+
+2. **Capture Image with Enter Key**
+   - After completing a drawing (e.g., drawing a rectangle or any other shape), you can press the **Enter** key.
+   - This will **trigger the snapshot callback** and provide the current image of the canvas as a snapshot.
+
+### Example Usage:
+
+- **Press `Escape`**: Disables drawing, preventing further changes on the canvas.
+- **Press `Enter`**: Captures the drawn content and provides the image through the snapshot callback.
+
+
+
 # Canvas Drawing Options
 
 The `CanvasDrawingOptions` type allows you to customize the drawing behavior on the canvas. Below is a detailed explanation of each option and its usage.
@@ -177,7 +196,7 @@ The `helperText` option has the following customizable properties:
 | Option                          | Type                                                      | Description                                                                                  | Example/Usage                                            | Default Value           |
 |----------------------------------|-----------------------------------------------------------|----------------------------------------------------------------------------------------------|----------------------------------------------------------|-------------------------|
 | `show`                          | `boolean`                                                 | If `true`, displays helper text.                                                              | `show: true`                                              | `true`                  |
-| `value`                         | `string`                                                  | The helper text to display.                                                                    | `value: 'Use the brush tool!'`                            | `undefined`             |
+| `value`                         | `string`                                                  | The helper text to display.                                                                    | `value: 'Use the brush tool!'`                            | `Press Enter to submit, Escape to cancel`             |
 | `backgroundColor`               | `string`                                                  | The background color of the helper text.                                                      | `backgroundColor: '#F14236'`                              | `'#F14236'`             |
 | `textColor`                     | `string`                                                  | The text color of the helper text.                                                            | `textColor: '#fff'`                                       | `'#fff'`                |
 | `fontSize`                      | `number`                                                  | The font size of the helper text.                                                             | `fontSize: 10`                                            | `10`                    |
