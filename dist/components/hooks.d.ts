@@ -13,6 +13,7 @@ type HelperText<T extends boolean> = {
 } | {
     show: false;
 });
+type Cursor = 'auto' | 'default' | 'none' | 'context-menu' | 'help' | 'pointer' | 'progress' | 'wait' | 'cell' | 'crosshair' | 'text' | 'vertical-text' | 'alias' | 'copy' | 'move' | 'no-drop' | 'not-allowed' | 'all-scroll' | 'zoom-in' | 'zoom-out' | 'ew-resize' | 'ns-resize' | 'nesw-resize' | 'nwse-resize' | 'col-resize' | 'row-resize' | 'copy' | 'grab' | 'grabbing';
 export type CanvasDrawingOptions = {
     drawingEnabled: boolean;
     rect?: {
@@ -25,6 +26,9 @@ export type CanvasDrawingOptions = {
     dpr?: number;
     scale?: number;
     helperText?: HelperText<boolean>;
+    cursor?: Cursor;
+    copyImageToClipBoard?: boolean;
+    imageQuality?: "low" | "medium" | "high";
 };
 export type SnapshotProps = {
     isCanceled: boolean;
@@ -34,7 +38,7 @@ export type SnapshotProps = {
         y: number;
         height: number;
         width: number;
-    };
+    } | null;
 };
 export declare const useCanvasSnap: (ref: React.RefObject<HTMLCanvasElement> | null, callBack?: (snapshot: SnapshotProps) => void, option?: CanvasDrawingOptions) => {
     canvasRef: import("react").RefObject<HTMLCanvasElement>;

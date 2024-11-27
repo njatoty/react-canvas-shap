@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect, useCallback, useMemo } from 'react';
-import { copyBase64ImageToClipboard, deepEqual } from './methods';
+import { copyBase64ImageToClipboard } from './methods';
 
 type HelperText<T extends boolean> = {
     show: T
@@ -44,7 +44,7 @@ export type SnapshotProps = {
         y: number;
         height: number;
         width: number;
-    }
+    } | null
 }
 
 const DEFAULT_OPTION: CanvasDrawingOptions = {
@@ -52,7 +52,22 @@ const DEFAULT_OPTION: CanvasDrawingOptions = {
     isGrayscale: false,
     cursor: 'crosshair',
     copyImageToClipBoard: true,
-    imageQuality: "high"
+    imageQuality: "high",
+    rect: {
+        outterbackgroundColor: 'rgba(0, 0, 0, 0.1)',
+        borderWidth: 1,
+        borderColor: '#F14236',
+        borderStyle: 'dashed',
+    },
+    helperText: {
+        show: true,
+        backgroundColor: '#F14236',
+        textColor: '#fff',
+        position: 'bottom-right',
+        fontSize: 10,
+        padding: 2
+    },
+    dpr: 1
 }
 
 const imageQualityValue = {
@@ -109,11 +124,21 @@ export const useCanvasSnap = (
 
             const layer = currentCanvas.cloneNode(true) as HTMLCanvasElement;
             layer.className = 'drawer-layer';
+            layer.removeAttribute('style');
             layer.style.position = 'absolute';
             layer.style.cursor = defaultOption.cursor || 'crosshair';
             layer.style.inset = '0';
             layer.style.zIndex = '10';
             layer.style.background = 'transparent';
+            
+            const ctx = layer.getContext('2d');
+            if (ctx) {
+                // Clear the canvas
+                ctx.clearRect(0, 0, layer.width, layer.height);
+                // Draw a dark semi-transparent overlay
+                ctx.fillStyle = defaultOption.rect?.outterbackgroundColor || 'rgba(0, 0, 0, 0.1)';
+                ctx.fillRect(0, 0, layer.width, layer.height);
+            }
 
             setLayerCanvas(layer);
 
@@ -140,10 +165,8 @@ export const useCanvasSnap = (
 
             // Optionally, fill the background color (adjust the color as needed)
             const { backgroundColor, background } = canvasRef.current.style;
-            if (backgroundColor || background) {
-                tempCtx.fillStyle = backgroundColor || background || '#ffffff';  // Example background color (white)
-                tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);  // Fill background
-            }
+            tempCtx.fillStyle = backgroundColor || background || '#ffffff';  // Example background color (white)
+            tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);  // Fill background
 
             // Apply grayscale filter
             if (defaultOption.isGrayscale)
@@ -228,10 +251,10 @@ export const useCanvasSnap = (
             ctx.clearRect(0, 0, layerCanvas.width, layerCanvas.height);
 
             // Draw a dark semi-transparent overlay
-            ctx.fillStyle = defaultOption.rect?.outterbackgroundColor || 'rgba(0, 0, 0, 0.2)';
+            ctx.fillStyle = defaultOption.rect?.outterbackgroundColor || 'rgba(0, 0, 0, 0.1)';
             ctx.fillRect(0, 0, layerCanvas.width, layerCanvas.height);
 
-            const lineWidth = defaultOption.rect?.borderWidth || 4;
+            const lineWidth = defaultOption.rect?.borderWidth!;
 
             // Cut out the rectangle (sharp area)
             ctx.clearRect(rectCoords.x, rectCoords.y, width, height);
@@ -245,7 +268,7 @@ export const useCanvasSnap = (
                 ctx.setLineDash([]); // Solid line (normal)
             }
 
-            ctx.strokeStyle = defaultOption.rect?.borderColor || 'green'; // Border color
+            ctx.strokeStyle = defaultOption.rect?.borderColor!; // Border color
             ctx.lineWidth = lineWidth; // Border thickness
 
             // Draw the border outside the cleared rectangle
@@ -336,9 +359,11 @@ export const useCanvasSnap = (
         const handlePressKey = async (e: KeyboardEvent) => {
             // prevent default behaviour
             e.preventDefault();
-            if (rectCoords.height === 0 || rectCoords.width === 0) return;
-
+            
             if (e.key === 'Enter') {
+
+                if (rectCoords.height === 0 || rectCoords.width === 0) return;
+
                 // create snapshot
                 const snapshot: SnapshotProps = {
                     isCanceled: false,
@@ -359,7 +384,18 @@ export const useCanvasSnap = (
 
             // to cancel drawing
             if (e.key === 'Escape') {
+
                 clearLayerCanvas();
+                
+                // create snapshot
+                const snapshot: SnapshotProps = {
+                    isCanceled: true,
+                    capturedImage: null,
+                    rectCoords: null
+                }
+
+                // return calback
+                callBack?.(snapshot);
             }
         }
 

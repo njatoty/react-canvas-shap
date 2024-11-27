@@ -1,13 +1,18 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useRef } from 'react';
+import React, { forwardRef, useImperativeHandle, useMemo, useRef } from 'react';
 import useCanvasSnap, { CanvasDrawingOptions } from './hooks';
 
 export type CanvasDrawingOptionsWithoutDrawingEnabled = Omit<CanvasDrawingOptions, 'drawingEnabled'>;
 
+export type CapturedImage = {
+  src: string,
+  width: number,
+  height: number
+}
 export interface CanvasCustomProps {
   drawingEnabled?: boolean;
   option?: CanvasDrawingOptionsWithoutDrawingEnabled;
   containerDivClassName?: string;
-  onImageCaptured?: (base64: string) => void;
+  onImageCaptured?: (image: CapturedImage) => void;
   onCaptureCanceled?: () => void;
 }
 
@@ -19,6 +24,7 @@ export const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(({
   containerDivClassName='',
   onImageCaptured,
   onCaptureCanceled,
+  option,
   ...props
 }, ref) => {
 
@@ -30,21 +36,32 @@ export const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(({
 
   useCanvasSnap(canvasRef, (snapshot) => {
     // get captured image
-    const base64 = snapshot.capturedImage!;
-    onImageCaptured?.(base64);
+    const { isCanceled, capturedImage, rectCoords } = snapshot;
+
+    if (capturedImage && rectCoords) {
+
+      const base64 = capturedImage!;
+      const { width, height } = rectCoords;
+      onImageCaptured?.({
+        src: base64,
+        width: width,
+        height: height
+      });
+
+    }
 
     // canceled
-    if (snapshot.isCanceled) onCaptureCanceled?.();
+    if (isCanceled) onCaptureCanceled?.();
 
   }, {
-    ...props.option,
+    ...option,
     drawingEnabled: isDrawingEnabled
   });
 
 
   return (
     <div style={{ position: 'relative'}} className={containerDivClassName}>
-      <canvas ref={canvasRef} {...props} />
+      <canvas className='react-canvas-snap_canvas' ref={canvasRef} {...props} />
     </div>
   )
 });

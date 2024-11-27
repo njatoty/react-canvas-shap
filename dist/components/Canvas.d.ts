@@ -1,37 +1,17 @@
 import React from 'react';
-type HelperText<T extends boolean> = {
-    show: T;
-} & ({
-    show: true;
-    value?: string;
-    backgroundColor?: string;
-    textColor?: string;
-    fontSize?: number;
-    fontFamily?: string;
-    padding?: number;
-    textHeight?: number;
-    position?: "top-right" | "bottom-right" | "top-left" | "bottom-left" | "top-center" | "bottom-center";
-} | {
-    show: false;
-});
-type CanvasDrawingOptions = {
-    rect?: {
-        outterbackgroundColor?: string;
-        borderColor?: string;
-        borderStyle?: "dashed" | "dotted" | "solid";
-        borderWidth?: number;
-    };
-    isGrayscale?: boolean;
-    dpr?: number;
-    scale?: number;
-    helperText?: HelperText<boolean>;
+import { CanvasDrawingOptions } from './hooks';
+export type CanvasDrawingOptionsWithoutDrawingEnabled = Omit<CanvasDrawingOptions, 'drawingEnabled'>;
+export type CapturedImage = {
+    src: string;
+    width: number;
+    height: number;
 };
 export interface CanvasCustomProps {
     drawingEnabled?: boolean;
-    option?: CanvasDrawingOptions;
+    option?: CanvasDrawingOptionsWithoutDrawingEnabled;
     containerDivClassName?: string;
-    onCaptured?: (base64: string) => void;
-    onCanceled?: () => void;
+    onImageCaptured?: (image: CapturedImage) => void;
+    onCaptureCanceled?: () => void;
 }
 export declare const Canvas: React.ForwardRefExoticComponent<React.CanvasHTMLAttributes<HTMLCanvasElement> & CanvasCustomProps & React.RefAttributes<HTMLCanvasElement>>;
 export default Canvas;
