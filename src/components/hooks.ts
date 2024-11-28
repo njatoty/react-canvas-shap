@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect, useCallback, useMemo } from 'react';
-import { copyBase64ImageToClipboard } from './methods';
+import { copyBase64ImageToClipboard, mergeSnapOptions } from './methods';
 
 type HelperText<T extends boolean> = {
     show: T
@@ -87,7 +87,7 @@ export const useCanvasSnap = (
     }), []);
     const [rectCoords, setRectCoords] = useState(initialRecCoords); // To store rect dimensions
 
-    const defaultOption = useMemo(() => ({ ...DEFAULT_OPTION, ...option }), [option]);
+    const defaultOption = useMemo(() => mergeSnapOptions(DEFAULT_OPTION, option), [option]);
 
     const clearLayerCanvas = useCallback(() => {
         if (!layerCanvas) return;

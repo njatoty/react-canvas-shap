@@ -69,7 +69,7 @@ import { useCanvasSnap } from 'react-canvas-snap';
 ```
 To use the useCanvasSnap hook from react-canvas-snap, you can follow the different usage patterns based on whether you want to pass a ref to it or not.
 
-### 1. Without Using Ref:
+### 1. Without Using *`Ref`*:
 
 If you don't want to manually handle the ref, you can simply pass null to the hook. It will return a ref that you can assign to your canvas element.
 
@@ -77,7 +77,7 @@ If you don't want to manually handle the ref, you can simply pass null to the ho
 ```js
 const { canvasRef } = useCanvasSnap(null);
 ```
-### 2. Using a Ref Manually:
+### 2. Using a *`Ref`* Manually:
 If you prefer to use your own ref, you can create one using useRef and pass it to useCanvasSnap. This allows you to have more control over the ref.
 
 ```js
@@ -88,7 +88,7 @@ const canvasRef = useRef(null);
 useCanvasSnap(canvasRef);
 ```
 
-### 3. Full usage of hook
+### 3. Full usage of *`useCanvasSnap`* hook
 
 ``` js
 import React from 'react';

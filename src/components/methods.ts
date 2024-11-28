@@ -1,3 +1,4 @@
+import { CanvasSnapOptions } from "./hooks";
 
 // Method to copy image to clipboard
 export const copyBase64ImageToClipboard = async (base64String: string, mimeType = 'image/png') => {
@@ -24,3 +25,34 @@ export const copyBase64ImageToClipboard = async (base64String: string, mimeType 
         console.error('Failed to copy Base64 image to clipboard:', err);
     }
 }
+
+// to merge object to keep some values not changed
+export const mergeSnapOptions = (
+    target: CanvasSnapOptions,
+    source: CanvasSnapOptions
+): CanvasSnapOptions => {
+    for (const key in source) {
+        if (source.hasOwnProperty(key)) {
+            
+            const typedKey = key as keyof CanvasSnapOptions;
+
+            // Check if the value is an object and not an array
+            if (
+                source[typedKey] &&
+                typeof source[typedKey] === 'object' &&
+                !Array.isArray(source[typedKey])
+            ) {
+                // Recursively merge objects
+                target[typedKey] = mergeSnapOptions(
+                    target[typedKey] as CanvasSnapOptions,
+                    source[typedKey] as CanvasSnapOptions
+                ) as never;
+            } else {
+                // For primitives or arrays, directly assign the value
+                target[typedKey] = source[typedKey] as never;
+            }
+        }
+    }
+    return target;
+};
+
