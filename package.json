@@ -1,7 +1,8 @@
 {
   "name": "react-canvas-snap",
   "version": "1.0.3",
-  "description": "ReactCanvasSnap is a lightweight and customizable React library that enables developers to capture content from HTML canvas elements effortlessly. Whether you're building interactive web applications, creative drawing tools, or capturing snapshots of dynamic visualizations, ReactCanvasSnap provides a simple API to seamlessly integrate canvas capturing into your React projects.",
+  "description": "ReactCanvasSnap is React library that allows you to easily capture a specific region of a canvas using the mouse cursor.",
+  "keywords": ["npm", "library", "capture", "snap", "canvas", "react"],
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "repository": {
