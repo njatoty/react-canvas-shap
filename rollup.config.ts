@@ -22,7 +22,11 @@ export default {
     plugins: [
         external(),
         resolve(),
-        typescript({ tsconfig: './tsconfig.json' }), // Use TypeScript plugin
+        typescript({
+            tsconfig: './tsconfig.json',
+            sourceMap: true,
+            inlineSources: true
+        }), // Use TypeScript plugin
         babel({
             exclude: 'node_modules/**',
             extensions: ['.js', '.jsx', '.ts', '.tsx'], // Add TypeScript extensions

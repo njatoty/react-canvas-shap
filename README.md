@@ -1,5 +1,7 @@
 # react-canvas-snap
 
+[![npm version](https://badge.fury.io/js/react-canvas-snap.svg)](https://www.npmjs.com/package/react-canvas-snap)
+
 `react-canvas-snap` is a React library that allows you to easily capture a specific region of a canvas using the mouse cursor. It enables users to draw a selection box on the canvas with their mouse and capture the content within the selected area.
 
 # Demo
@@ -46,7 +48,7 @@ import { Canvas } from 'react-canvas-snap';
             padding: 3,
             fontSize: 10,
             backgroundColor: '#F14236',
-            textColor: '#fff'
+            textColor: '#ffffff'
         },
         imageQuality: "high", 
     }}
@@ -110,7 +112,7 @@ const MyComponent = () => {
             padding: 3,
             fontSize: 10,
             backgroundColor: '#F14236',
-            textColor: '#fff'
+            textColor: '#ffffff'
         },
         imageQuality: "high", 
     }
@@ -172,7 +174,7 @@ The `CanvasSnapOptions` type allows you to customize the drawing behavior on the
 | `drawingEnabled`                 | `boolean`                                                 | Enables or disables drawing on the canvas. If set to `false`, drawing is disabled.            | `drawingEnabled: true`                                    | `false`                 |
 | `rect`                           | `object`                                                  | Customizes the rectangle's appearance when drawing a rectangle.                               | See `rect` options below                                  | `{}` (empty object)     |
 | `isGrayscale`                    | `boolean`                                                 | If set to `true`, the canvas will be rendered in grayscale.                                   | `isGrayscale: true`                                       | `false`                 |
-| `helperText`                     | `HelperText`                                     | Optionally adds helper text on the canvas. If provided, it will show or hide based on the boolean value. | See `helperText`. | `{ show: true, backgroundColor: '#F14236', textColor: '#fff', position: 'bottom-right', fontSize: 10, padding: 2 }` |
+| `helperText`                     | `HelperText`                                     | Optionally adds helper text on the canvas. If provided, it will show or hide based on the boolean value. | See `helperText`. | `{ show: true, backgroundColor: '#F14236', textColor: '#ffffff', position: 'bottom-right', fontSize: 10, padding: 2 }` |
 | `cursor`                         | `Cursor`                                                  | Customizes the cursor appearance on the canvas.                                               | `cursor: 'crosshair'`                                     | `'crosshair'`           |
 | `copyImageToClipBoard`           | `boolean`                                                 | If `true`, it allows copying the drawn image to the clipboard.                               | `copyImageToClipBoard: true`                              | `true`                  |
 | `imageQuality`                   | `string`                           | Controls the quality of the exported image. Higher quality may result in larger file sizes. Options include `low`, `medium`, or `high`.   | `imageQuality: 'high'`                                    | `'high'`                |
@@ -194,14 +196,14 @@ The `helperText` option has the following customizable properties:
 | Option                          | Type                                                      | Description                                                                                  | Example/Usage                                            | Default Value           |
 |----------------------------------|-----------------------------------------------------------|----------------------------------------------------------------------------------------------|----------------------------------------------------------|-------------------------|
 | `show`                          | `boolean`                                                 | If `true`, displays helper text.                                                              | `show: true`                                              | `true`                  |
-| `value`                         | `string`                                                  | The helper text to display.                                                                    | `value: 'Use the brush tool!'`                            | `Press Enter to submit, Escape to cancel`             |
+| `value`                         | `string`                                                  | The helper text to display.                                                                    | `value: 'Use the brush tool!'`                            | `Press Enter to capture, Escape to cancel`             |
 | `backgroundColor`               | `string`                                                  | The background color of the helper text.                                                      | `backgroundColor: '#F14236'`                              | `'#F14236'`             |
-| `textColor`                     | `string`                                                  | The text color of the helper text.                                                            | `textColor: '#fff'`                                       | `'#fff'`                |
+| `textColor`                     | `string`                                                  | The text color of the helper text.                                                            | `textColor: '#ffffff'`                                       | `'#ffffff'`                |
 | `fontSize`                      | `number`                                                  | The font size of the helper text.                                                             | `fontSize: 10`                                            | `10`                    |
 | `fontFamily`                    | `string`                                                  | The font family of the helper text.                                                           | `fontFamily: 'Arial'`                                     | `undefined`             |
 | `padding`                       | `number`                                                  | The padding around the helper text.                                                           | `padding: 2`                                              | `2`                     |
 | `textHeight`                    | `number`                                                  | The height of the helper text box.                                                            | `textHeight: 20`                                          | `undefined`             |
-| `position`                      | `string` | The position of the helper text on the canvas.<br>Option include `top-right`, `bottom-right`, `top-left`, `bottom-left`, <br> `top-center` or `bottom-center`       | `position: 'bottom-right'`                              | `'bottom-right'`        |
+| `position`                      | `string` | The position of the helper text on the canvas.<br>Option include `auto`, `top-right`, `bottom-right`, `top-left`, `bottom-left`, <br> `top-center` or `bottom-center`       | `position: 'bottom-right'`                              | `'auto'`        |
 
 
 ## Acknowledgments

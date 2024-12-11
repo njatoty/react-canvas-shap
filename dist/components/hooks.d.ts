@@ -10,7 +10,7 @@ type HelperText<T extends boolean> = {
     fontFamily?: string;
     padding?: number;
     textHeight?: number;
-    position?: "top-right" | "bottom-right" | "top-left" | "bottom-left" | "top-center" | "bottom-center";
+    position?: "auto" | "top-right" | "bottom-right" | "top-left" | "bottom-left" | "top-center" | "bottom-center";
 } | {
     show: false;
 });
@@ -38,6 +38,12 @@ export type SnapshotProps = {
         height: number;
         width: number;
     } | null;
+};
+export type RectCoords = {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
 };
 export declare const useCanvasSnap: (ref: React.RefObject<HTMLCanvasElement> | null, callBack?: ((snapshot: SnapshotProps) => void) | undefined, option?: CanvasSnapOptions) => {
     canvasRef: import("react").RefObject<HTMLCanvasElement>;
