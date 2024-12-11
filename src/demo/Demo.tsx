@@ -175,24 +175,24 @@ export const Demo = () => {
                 ref={canvasRef}
                 drawingEnabled={capturing}
                 option={{
-                    rect: {
-                        // borderColor: '#F14236',
-                        // borderStyle: 'dashed',
-                        // borderWidth: 1,
-                        outterBackgroundColor: 'rgba(255,255,255,0.8)'
-                    },
-                    helperText: {
-                        show: true,
-                        // value: 'Enter: to capture or Esc: to cancel',
-                        // padding: 3,
-                        // fontSize: 10,
-                        // backgroundColor: '#F14236',
-                        // textColor: '#fff',
-                        position: 'top-left'
-                    },
-                    imageQuality: "low",
-                    copyImageToClipBoard: false,
-                    isGrayscale: true
+                    // rect: {
+                    //     // borderColor: '#F14236',
+                    //     // borderStyle: 'dashed',
+                    //     // borderWidth: 1,
+                    //     outterBackgroundColor: 'rgba(255,255,255,0.8)'
+                    // },
+                    // helperText: {
+                    //     show: true,
+                    //     // value: 'Enter: to capture or Esc: to cancel',
+                    //     // padding: 3,
+                    //     // fontSize: 10,
+                    //     // backgroundColor: '#F14236',
+                    //     // textColor: '#fff',
+                    //     position: 'top-left'
+                    // },
+                    // imageQuality: "low",
+                    // copyImageToClipBoard: false,
+                    // isGrayscale: true
                 }}
                 onCaptureCanceled={() => setCapturing(false)}
                 onImageCaptured={(img) => setCapturedImage(img)}

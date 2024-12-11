@@ -2,9 +2,19 @@
   "name": "react-canvas-snap",
   "version": "1.0.3",
   "description": "ReactCanvasSnap is React library that allows you to easily capture a specific region of a canvas using the mouse cursor.",
-  "keywords": ["npm", "library", "capture", "snap", "canvas", "react"],
+  "keywords": [
+    "npm",
+    "library",
+    "capture",
+    "snap",
+    "canvas",
+    "react"
+  ],
   "main": "dist/index.js",
   "module": "dist/index.es.js",
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/njatoty/react-canvas-snap.git"

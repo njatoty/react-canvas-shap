@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect, useCallback, useMemo } from 'react';
-import { copyBase64ImageToClipboard, mergeSnapOptions } from './methods';
+import { copyBase64ImageToClipboard, mergeSnapOptions, normalizeRectangle } from './methods';
 
 type HelperText<T extends boolean> = {
     show: T
@@ -12,7 +12,7 @@ type HelperText<T extends boolean> = {
     fontFamily?: string;
     padding?: number;
     textHeight?: number;
-    position?: "top-right" | "bottom-right" | "top-left" | "bottom-left" | "top-center" | "bottom-center"
+    position?: "auto" | "top-right" | "bottom-right" | "top-left" | "bottom-left" | "top-center" | "bottom-center"
 } | {
     show: false
 })
@@ -45,6 +45,13 @@ export type SnapshotProps = {
     } | null
 }
 
+export type RectCoords = {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
+
 const DEFAULT_OPTION: CanvasSnapOptions = {
     drawingEnabled: false,
     isGrayscale: false,
@@ -60,10 +67,13 @@ const DEFAULT_OPTION: CanvasSnapOptions = {
     helperText: {
         show: true,
         backgroundColor: '#F14236',
-        textColor: '#fff',
-        position: 'bottom-right',
+        textColor: '#ffffff',
+        position: 'auto',
         fontSize: 10,
-        padding: 2
+        fontFamily: 'Arial',
+        padding: 2,
+        value: 'Press Enter to capture, Escape to cancel',
+        textHeight: 10
     },
 }
 
@@ -85,7 +95,7 @@ export const useCanvasSnap = (
         width: 0, height: 0,
         x: 0, y: 0
     }), []);
-    const [rectCoords, setRectCoords] = useState(initialRecCoords); // To store rect dimensions
+    const [rectCoords, setRectCoords] = useState<RectCoords>(initialRecCoords); // To store rect dimensions
 
     const defaultOption = useMemo(() => mergeSnapOptions(DEFAULT_OPTION, option), [option]);
 
@@ -123,17 +133,17 @@ export const useCanvasSnap = (
             layer.className = 'drawer-layer';
             layer.removeAttribute('style');
             layer.style.position = 'absolute';
-            layer.style.cursor = defaultOption.cursor || 'crosshair';
+            layer.style.cursor = defaultOption.cursor!;
             layer.style.inset = '0';
             layer.style.zIndex = '10';
             layer.style.background = 'transparent';
-            
+
             const ctx = layer.getContext('2d');
             if (ctx) {
                 // Clear the canvas
                 ctx.clearRect(0, 0, layer.width, layer.height);
                 // Draw a dark semi-transparent overlay
-                ctx.fillStyle = defaultOption.rect?.outterBackgroundColor || 'rgba(0, 0, 0, 0.1)';
+                ctx.fillStyle = defaultOption.rect?.outterBackgroundColor!;
                 ctx.fillRect(0, 0, layer.width, layer.height);
             }
 
@@ -150,7 +160,7 @@ export const useCanvasSnap = (
 
         if (!rectCoords || !canvasRef.current) return null;
 
-        const { x: startX, y: startY, width, height } = rectCoords;
+        const { x: startX, y: startY, width, height } = normalizeRectangle(rectCoords);
 
         // Create a new canvas for the cropped area
         const tempCanvas = document.createElement('canvas');
@@ -227,6 +237,8 @@ export const useCanvasSnap = (
 
             const rect = layerCanvas.getBoundingClientRect();
 
+            const { x: X, y: Y } = rectCoords;
+
             // Adjust for both scaling and DPR
             const scaleX = (layerCanvas.width / rect.width);
             const scaleY = (layerCanvas.height / rect.height);
@@ -234,8 +246,8 @@ export const useCanvasSnap = (
             const x = (event.clientX - rect.left) * scaleX;
             const y = (event.clientY - rect.top) * scaleY;
 
-            const width = x - rectCoords.x;
-            const height = y - rectCoords.y;
+            const width = x - X;
+            const height = y - Y;
 
             // Update the rectangle dimensions
             setRectCoords((prev) => ({
@@ -248,13 +260,13 @@ export const useCanvasSnap = (
             ctx.clearRect(0, 0, layerCanvas.width, layerCanvas.height);
 
             // Draw a dark semi-transparent overlay
-            ctx.fillStyle = defaultOption.rect?.outterBackgroundColor || 'rgba(0, 0, 0, 0.1)';
+            ctx.fillStyle = defaultOption.rect?.outterBackgroundColor!;
             ctx.fillRect(0, 0, layerCanvas.width, layerCanvas.height);
 
             const lineWidth = defaultOption.rect?.borderWidth!;
 
             // Cut out the rectangle (sharp area)
-            ctx.clearRect(rectCoords.x, rectCoords.y, width, height);
+            ctx.clearRect(X, Y, width, height);
 
             // Apply border style
             if (defaultOption.rect?.borderStyle === 'dashed') {
@@ -270,8 +282,8 @@ export const useCanvasSnap = (
 
             // Draw the border outside the cleared rectangle
             ctx.strokeRect(
-                rectCoords.x - (lineWidth / 2), // Shift left by half the border width
-                rectCoords.y - (lineWidth / 2), // Shift up by half the border width
+                X - (lineWidth / 2), // Shift left by half the border width
+                Y - (lineWidth / 2), // Shift up by half the border width
                 width + lineWidth, // Increase width to include the border
                 height + lineWidth // Increase height to include the border
             );
@@ -282,49 +294,106 @@ export const useCanvasSnap = (
                 if (!defaultOption.helperText?.show) return;
 
                 // Add text with a background at the bottom-right corner of the rectangle
-                const text = defaultOption.helperText?.value || "Press Enter to submit, Escape to cancel";
+                const text = defaultOption.helperText?.value!;
 
-                ctx.font = `${defaultOption.helperText?.fontSize || 16}px ${defaultOption.helperText?.fontFamily || 'Arial'}`; // Customize font and size
+                ctx.font = `${defaultOption.helperText?.fontSize}px ${defaultOption.helperText?.fontFamily}`; // Customize font and size
                 ctx.textBaseline = "bottom"; // Align text to the bottom
                 ctx.textAlign = "right"; // Align text to the right
 
                 // Measure the text dimensions
                 const textMetrics = ctx.measureText(text);
-                const padding = defaultOption.helperText?.padding || 8; // Padding around the text
+                const padding = defaultOption.helperText?.padding!; // Padding around the text
                 const textWidth = textMetrics.width;
-                const textHeight = defaultOption.helperText?.fontSize || 16; // Approximation of text height
+                const textHeight = defaultOption.helperText?.fontSize!; // Approximation of text height
                 const marginY = textHeight * 2 + padding;
 
                 // Background color
-                ctx.fillStyle = defaultOption.helperText?.backgroundColor || "rgba(36, 172, 71, 0.9)"; // Semi-transparent black
+                ctx.fillStyle = defaultOption.helperText?.backgroundColor!; // Semi-transparent black
 
-                const position = defaultOption.helperText?.position || 'bottom-right';
+                let position = defaultOption.helperText?.position!;
+
+                if (position === 'auto') {
+                    let positionY = 'top', positionX = 'right';
+                    // top close
+                    if (Y < marginY) {
+                        positionY = 'bottom';
+                    }
+                    // for bottom close 
+                    if (Y + height >= rect.height - marginY) {
+                        positionY = 'top';
+                    }
+
+                    // for negative height
+                    if (height < 0) {
+                        positionY = 'top';
+                        if (height + Y <= marginY) {
+                            positionY = 'bottom';
+                        }
+                    }
+
+                    // for left close
+                    if (textWidth <= rect.width && width > 0) {
+                        positionX = 'left';
+                        if (X + textWidth >= rect.width) {
+                            positionX = 'right';
+                        }
+                    } else {
+                        positionX = 'right';
+                        if (X + width < textWidth) {
+                            positionX = 'left';
+                        }
+                    }
+
+                    position = (`${positionY}-${positionX}` as typeof position);
+
+                }
+
                 let textY = 0, rectY = 0, textX = 0, rectX = 0;
                 const [yPosition, xPosition] = position.split('-');
 
                 switch (yPosition) {
                     case 'top':
-                        rectY = rectCoords.y - marginY;
-                        textY = rectCoords.y - textHeight;
+                        if (height < 0) {
+                            rectY = Y - marginY + height;
+                            textY = Y - textHeight + height;
+                        } else {
+                            rectY = Y - marginY;
+                            textY = Y - textHeight;
+                        }
                         break;
                     case 'bottom':
-                        rectY = rectCoords.y + height - textHeight - padding * 2 + marginY;
-                        textY = rectCoords.y + height + (marginY) - padding;
+                        if (height < 0) {
+                            rectY = Y - textHeight - padding * 2 + marginY;
+                            textY = Y + (marginY) - padding;
+                        } else {
+                            rectY = Y + height - textHeight - padding * 2 + marginY;
+                            textY = Y + height + (marginY) - padding;
+                        }
                         break;
                 }
 
                 switch (xPosition) {
                     case 'left':
-                        rectX = rectCoords.x;
-                        textX = rectCoords.x + textWidth + padding;
+                        if (width < 0) {
+                            rectX = X + width;
+                            textX = X + width + textWidth + padding;
+                        } else {
+                            rectX = X;
+                            textX = X + textWidth + padding;
+                        }
                         break;
                     case 'right':
-                        rectX = rectCoords.x + width - textWidth - padding * 2;
-                        textX = rectCoords.x + width - padding;
+                        if (width < 0) {
+                            rectX = X - textWidth - padding * 2;
+                            textX = X - padding;
+                        } else {
+                            rectX = X + width - textWidth - padding * 2;
+                            textX = X + width - padding;
+                        }
                         break;
                     case 'center': default:
-                        rectX = rectCoords.x + (width - textWidth) / 2 - padding * 2;
-                        textX = rectCoords.x + (width + textWidth) / 2 - padding;
+                        rectX = X + (width - textWidth) / 2 - padding * 2;
+                        textX = X + (width + textWidth) / 2 - padding;
                         break;
 
                 }
@@ -338,7 +407,7 @@ export const useCanvasSnap = (
                 );
 
                 // Text color
-                ctx.fillStyle = defaultOption.helperText?.textColor || "white";
+                ctx.fillStyle = defaultOption.helperText?.textColor!;
                 ctx.fillText(
                     text,
                     textX, // x position for text inside the background
@@ -358,7 +427,7 @@ export const useCanvasSnap = (
         const handlePressKey = async (e: KeyboardEvent) => {
             // prevent default behaviour
             e.preventDefault();
-            
+
             if (e.key === 'Enter') {
 
                 if (rectCoords.height === 0 || rectCoords.width === 0) return;
@@ -385,7 +454,7 @@ export const useCanvasSnap = (
             if (e.key === 'Escape') {
 
                 clearLayerCanvas();
-                
+
                 // create snapshot
                 const snapshot: SnapshotProps = {
                     isCanceled: true,
